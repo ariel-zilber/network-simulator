@@ -1,0 +1,40 @@
+schedule:
+  settings:
+    ## how long the test will be 
+    duration: 600
+
+    # what is the ip of the docker rc
+    ip: 127.0.0.1
+
+    # what is the port of the docker rc
+    port: 8086  
+
+    # possible actions to perform
+    # From https://github.com/lukaszlach/docker-tc
+    actions: 
+      - rate      # rate=512kbps
+      - delay     # delay=100ms
+      - loss      # loss=50%
+      - corrupt   # corrupt=10%
+      - duplicate # duplicate=50%
+      - limit     # 1mbps     
+  hosts:
+    v1-t1_host-1:
+      - start: 0 
+        end: 4
+        action:
+          - name: delay
+            value: 300ms 
+          - name: loss
+            value: 512kbps  
+      - start: 5 
+        end: 600
+        action:
+    v1-t1_host-2:
+      - start: 0 
+        end: 600
+        action:
+    v1-t1_host-3:
+      - start: 0 
+        end: 600
+        action:

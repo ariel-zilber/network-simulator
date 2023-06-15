@@ -1,0 +1,39 @@
+version: '3.1'
+
+services: 
+  web: 
+    build:
+      context: ./traffic-simulator-web
+
+    image: traffic-simulator-web:latest
+    volumes: 
+      - ./web:/data
+    ports: 
+      - 8085:8080
+    restart: always
+
+  docker-tc:
+    container_name: docker-tc
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - HTTP_BIND=0.0.0.0
+      - HTTP_PORT=8086
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/docker-tc:/var/docker-tc
+    image: lukaszlach/docker-tc
+
+  docker-topo:
+    build:
+      context: ./docker-topo
+    container_name: docker-topo
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./topology:/topology
+      - ./web:/web
+      - /var/run/docker.sock:/var/run/docker.sock
+    image: docker-topo

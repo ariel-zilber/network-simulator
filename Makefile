@@ -7,7 +7,7 @@ help:
 run:
 	docker-compose up
 
-## builds the simulators
+## builds the simulators 
 build: 
 	cd agent;docker build . -t traffic-agent:latest
 
